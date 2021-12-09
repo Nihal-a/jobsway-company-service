@@ -2,8 +2,8 @@ var express = require('express');
 const {registerCompany , reregisterCompany , loginCompany} = require('../controllers/Auth');
 const {getCompanyDetails , getCompanyJobs , showWelcome} = require('../controllers/Company');
 const { getJobById , addJob , addFreeJob , deleteJob , editJob} = require('../controllers/Jobs');
-const { addTransaction , addJobPayment , verifyPayment , stripePayment } = require('../controllers/payments');
 const {valdiateJobDetails , validateCompanyRegistration } = require('../middlewares/JobVerification')
+const { addTransaction , addJobPayment , verifyPayment , stripePayment } = require('../controllers/payments');
 
 const router  = express.Router();
 
