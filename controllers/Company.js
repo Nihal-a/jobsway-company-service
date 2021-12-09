@@ -8,7 +8,7 @@ const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
 
 module.exports = {
     showWelcome : async (req,res) => {
-        res.send('Hey , Welcome to JobsWay Company Service.')
+        res.send('Hey, Welcome to JobsWay Company Service.')
     },
     getCompanyDetails :async (req,res) => {
         const id = req.params.id
