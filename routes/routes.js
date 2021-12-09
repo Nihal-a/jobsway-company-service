@@ -3,7 +3,7 @@ const {registerCompany , reregisterCompany , loginCompany} = require('../control
 const {getCompanyDetails , getCompanyJobs , showWelcome} = require('../controllers/Company');
 const { getJobById , addJob , addFreeJob , deleteJob , editJob} = require('../controllers/Jobs');
 const {valdiateJobDetails , validateCompanyRegistration } = require('../middlewares/JobVerification')
-const { addTransaction , addJobPayment , verifyPayment , stripePayment } = require('../controllers/payments');
+// const { addTransaction , addJobPayment , verifyPayment , stripePayment } = require('../controllers/Payments');
 
 const router  = express.Router();
 
@@ -30,12 +30,12 @@ router.patch('/edit-job/:id&cid' , editJob)
 //Payment
 
         //Razorpay
-        router.post('/add-transaction',addTransaction)
-        router.post('/addjobpayment', addJobPayment)
-        router.post('/verify-payment', verifyPayment)
+        // router.post('/add-transaction',addTransaction)
+        // router.post('/addjobpayment', addJobPayment)
+        // router.post('/verify-payment', verifyPayment)
         
-        //Stripe
-        router.post('/create-payment-intent' , stripePayment)
+        // //Stripe
+        // router.post('/create-payment-intent' , stripePayment)
         
 
 
