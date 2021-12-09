@@ -18,8 +18,12 @@ app.use(express.urlencoded({
 }));
 app.use(cors())
 
+app.use('/' , (reqq,res) => {
+  res.send('Hey , Welcome to JobsWay Company Service.')
+})
 
 app.use('/api/v1/company/',routes)
+
 
 app.get('/logo.jpg' , (req , res) => {
   res.sendFile(path.join(__dirname, "public/Images/logo.jpg"));
