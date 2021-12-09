@@ -3,8 +3,8 @@ const state = {
     db:null
 }
 module.exports.connect = function(done){
-    const url = 'mongodb://localhost:27017'
-    const name = 'jobsWay'
+    const url = process.env.MONGODB_URL
+    const name = process.env.MONGODB_NAME
 
     mongoClient.connect(url,{ useUnifiedTopology: true },(err,data)=>{
         if(err) return done(err)
