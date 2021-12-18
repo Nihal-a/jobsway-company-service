@@ -2,20 +2,20 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 const db = require('../config/connection')
 const collection = require('../config/collection')
-const { json } = require('body-parser')
 const { ObjectId } = require('mongodb')
 const { validationResult } = require('express-validator')
-
+const { cloudinary } = require('../utils/cloudinary')
 
 module.exports = {
     registerCompany:async(req,res) => {
-        const { email } = req.body
         const{companyDetails , image} = req.body
+        const { email } = companyDetails
+
         var errors = validationResult(req)
 
         //Register Company
         try {
-
+            
             //Express Validator error.
             if (!errors.isEmpty()) {
                return res.status(400).json({ errors: errors.array() })

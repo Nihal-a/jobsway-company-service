@@ -24,6 +24,8 @@
     "nodemon": "^2.0.15",
     "razorpay": "^2.8.0",
     "shortid": "^2.2.16",
-    "stripe": "^8.191.0"
+    "stripe": "^8.191.0",
+    "webpack-dev-server": "^4.6.0",
+    "cloudinary": "^1.27.1"
   }
 }

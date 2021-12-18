@@ -6,7 +6,7 @@ var logger = require('morgan')
 var path = require('path')
 var fs = require('fs')
 
-const PORT  = process.env.PORT || 4002;
+const PORT  = process.env.PORT || 4000;
 const app = express()
 
 var accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), { flags: 'a' })
