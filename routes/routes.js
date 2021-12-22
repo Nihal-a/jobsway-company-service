@@ -1,6 +1,7 @@
 var express = require('express');
 const {registerCompany , reregisterCompany , loginCompany} = require('../controllers/Auth');
 const {getCompanyDetails , getCompanyJobs , showWelcome} = require('../controllers/Company');
+const { addCompanyHr } = require('../controllers/CompanyHr');
 const { getJobById , addJob , addFreeJob , deleteJob , editJob} = require('../controllers/Jobs');
 const {valdiateJobDetails , validateCompanyRegistration } = require('../middlewares/JobVerification')
 // const { addTransaction , addJobPayment , verifyPayment , stripePayment } = require('../controllers/Payments');
@@ -26,6 +27,9 @@ router.get('/job/:id' , getJobById)
 router.delete('/delete-job/:id' , deleteJob)
 router.post('/add-free-plan', addFreeJob)
 router.patch('/edit-job/:id&cid' , editJob)
+
+//HR Managment 
+router.post('/add-company-hr/:cid' , addCompanyHr)
 
 //Payment
 

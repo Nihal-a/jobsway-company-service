@@ -8,7 +8,6 @@ const { cloudinary } = require('../utils/cloudinary')
 
 module.exports = {
     registerCompany:async(req,res) => {
-        console.log("data : " , req.body);
         const{companyDetails , image} = req.body
         const { email } = companyDetails
 
