@@ -129,7 +129,7 @@ module.exports = {
 
         try {
             request.post(
-                PAYPAL_API + "/v1/payments/payment",
+                process.env.PAYPAL_API + "/v1/payments/payment",
                 {
                   auth: {
                     user: process.env.CLIENT,
