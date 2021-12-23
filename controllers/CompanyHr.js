@@ -96,5 +96,18 @@ module.exports = {
             console.log(error.message);
             res.status(401).json(error.message)
         }
+    },
+    deleteHrByComapny : async (req ,res) => {
+
+        const {hrId} = req.body
+
+        try {
+            await db.get().collection(collection.HR_COLLECTION).deleteOne({_id : ObjectId(hrId)})
+
+            res.status(200).json({msg : "Hr Deleted Successfully."})
+        } catch (error) {
+            console.log(error.message);
+            res.status(401).json(error.message)
+        }
     }
 }
