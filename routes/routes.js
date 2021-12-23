@@ -25,7 +25,7 @@ router.get('/jobs/:id' , getCompanyJobs)
 router.post('/add-job/:hrId' ,valdiateJobDetails,addJob)
 router.get('/job/:id' , getJobById)
 router.delete('/delete-job/:id' , deleteJob)
-router.post('/add-free-plan', addFreeJob)
+router.post('/add-free-plan/:hrid', addFreeJob)
 router.patch('/edit-job/:id&cid' , editJob)
 
 //HR Managment 

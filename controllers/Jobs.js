@@ -35,6 +35,10 @@ module.exports = {
 
         try {
 
+        var accessCheck =await db.get().collection(collection.JOBS_COLLECTION).findOne({_id : ObjectId(id)})
+
+        if(hrId !== accessCheck.hrId.toString()) return res.status(400).json({msg : "Invalid Access to Delete the Job"})
+
         await db.get().collection(collection.JOBS_COLLECTION).updateOne({_id: ObjectId(jobDetails.jobId)}, {
             $set : {
                 status : true,
@@ -66,9 +70,9 @@ module.exports = {
         const {id} = req.params
         const {hrId} = req.query
         try {
-            var deleteJob =await db.get().collection(collection.JOBS_COLLECTION).findOne({_id : ObjectId(id)})
+            var accessCheck =await db.get().collection(collection.JOBS_COLLECTION).findOne({_id : ObjectId(id)})
 
-            if(hrId !== deleteJob.hrId.toString()) return res.status(400).json({msg : "Invalid Access to Delete the Job"})
+            if(hrId !== accessCheck.hrId.toString()) return res.status(400).json({msg : "Invalid Access to Delete the Job"})
 
             var deleteJob =await db.get().collection(collection.JOBS_COLLECTION).deleteOne({_id : ObjectId(id)})
 
