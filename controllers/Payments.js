@@ -1,15 +1,14 @@
 require('dotenv').config()
-const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 const db = require('../config/connection')
+var request = require('request');
 const collection = require('../config/collection')
-const { json } = require('body-parser')
 const { ObjectId } = require('mongodb')
 const shortid = require('shortid')
 const Razorpay = require('razorpay')
 const {createHmac} = require('crypto')
 const { validationResult } = require('express-validator')
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY)
+const { convert } = require("current-currency")
 
 
 const razorpay = new Razorpay({
@@ -30,6 +29,7 @@ module.exports = {
             receipt: shortid.generate()
         }
         try {
+
             const result = await razorpay.orders.create(options)    
 
             res.status(200).json({
@@ -69,9 +69,15 @@ module.exports = {
             res.status(500).json({Err : error})
         }
     },
-    addTransaction : async(req,res) => {
+    updateJobTransaction : async(req,res) => {
         const payDetails = req.body
+        const {hrId} = req.params
         try {
+
+            var accessCheck =await db.get().collection(collection.JOBS_COLLECTION).findOne({_id : ObjectId(payDetails.jobId)})
+
+            if(hrId !== accessCheck.hrId.toString()) return res.status(400).json({msg : "Invalid Access to Delete the Job"})
+
             await db.get().collection(collection.JOBS_COLLECTION).updateOne({_id: ObjectId(payDetails.jobId)}, {
                 $set : {
                     status : true,
@@ -116,4 +122,96 @@ module.exports = {
             res.status(500).json({Err : error})
         }
     },    
+    payPalCreatePayment : async (req , res) => {
+
+        const { inrAmount } = req.body
+        const { amount } = convert("INR", inrAmount , "USD")
+
+        try {
+            request.post(
+                PAYPAL_API + "/v1/payments/payment",
+                {
+                  auth: {
+                    user: process.env.CLIENT,
+                    pass: process.env.SECRET,
+                  },
+                  body: {
+                    intent: "Add Job",
+                    payer: {
+                      payment_method: "paypal",
+                    },
+                    transactions: [
+                      {
+                        amount: {
+                          total: amount,
+                          currency: "USD",
+                        },
+                      },
+                    ],
+                    redirect_urls: {
+                      return_url: "https://example.com",
+                      cancel_url: "https://example.com",
+                    },
+                  },
+                  json: true,
+                },
+                function (err, response) {
+                  if (err) {
+                    console.error(err);
+                    return res.sendStatus(500);
+                  }
+                  // 3. Return the payment ID to the client
+                  res.status(200).json({
+                    id: response.body.id,
+                  });
+                }
+              );
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({Err : error})
+        }
+    },
+    payPalExecutePayment : async (req , res) => {
+
+        var {paymentID , payerID , inrAmount} = req.body
+        const { amount } = convert("INR", inrAmount , "USD")
+
+        try {
+
+            request.post(
+                PAYPAL_API + "/v1/payments/payment/" + paymentID + "/execute",
+                {
+                  auth: {
+                    user: process.env.CLIENT,
+                    pass: process.env.SECRET,
+                  },
+                  body: {
+                    payer_id: payerID,
+                    transactions: [
+                      {
+                        amount: {
+                          total: amount,
+                          currency: "USD",
+                        },
+                      },
+                    ],
+                  },
+                  json: true,
+                },
+                function (err, response) {
+                  if (err) {
+                    console.error(err);
+                    return res.sendStatus(500);
+                  }
+                  // 4. Return a success response to the client
+                  res.json({
+                    status: "success",
+                  });
+                }
+              );
+            
+        } catch (error) {
+            
+        }
+    }
 }
