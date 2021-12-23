@@ -48,7 +48,7 @@ router.post('/login/hr' , loginHr)
         router.post('/paypal/execute-payment' , payPalExecutePayment)
         
         //Stripe
-        router.post('/create-payment-intent' , stripePayment)
+        router.post('/stripe/create-payment-intent' , stripePayment)
         
 
 

@@ -94,16 +94,16 @@ module.exports = {
         }
     },
     stripePayment : async (req,res) => {
-        payDetails = req.body
+        const {planName} = req.body
         
         try {
 
             var amount;
 
-            if(payDetails.planName == 'Basic') {
+            if(planName == 'Basic') {
                 amount = 399
             }
-            if(payDetails.planName == 'Premium') {
+            if(planName == 'Premium') {
                 amount = 899
             }
 
