@@ -80,5 +80,21 @@ module.exports = {
             console.log(error);
             res.status(500).json({Err : error})
         }
+    },
+    getAllHrByCompany : async (req, res) => {
+
+        const { cid } = req.params
+
+        try {
+
+            const AllHrDetails = await db.get().collection(collection.HR_COLLECTION).find({companyId : ObjectId(cid)}).toArray() 
+
+            res.status(200).json(AllHrDetails)
+
+            
+        } catch (error) {
+            console.log(error.message);
+            res.status(401).json(error.message)
+        }
     }
 }
