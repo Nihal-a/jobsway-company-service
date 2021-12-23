@@ -27,7 +27,7 @@ module.exports = {
 
             const payload = { email : hr.email, id : hr._id, }
 
-            const token = jwt.sign(payload , secret , { expiresIn : '1m' })
+            const token = jwt.sign(payload , secret , { expiresIn : '2m' })
 
             const signLink = `http://localhost:3002/hr-signup-page/${token}/${hr._id}`
 
@@ -42,4 +42,43 @@ module.exports = {
             res.status(500).json({Err : error})
         }
     },
+    activateHrAccount : async (req,res) => {
+        const {token , hrid} = req.params
+        const {password , confirmPassword} = req.body
+        try {
+
+            const hrExist = await db.get().collection(collection.HR_COLLECTION).findOne({_id : ObjectId(hrid)})
+
+            if(!hrExist) return res.status(401).json({msg : 'Hr not found OR Invalid Id'})
+
+            const secret = process.env.JWT_SECRET + hrExist.password
+
+            try {
+                const { id } = jwt.verify(token , secret) 
+
+                if(confirmPassword !== password) return res.status(401).json({msg : "Password and confirm password does not match."})
+
+                const hashedPassword = await bcrypt.hash(password , 10)
+
+                await db.get().collection(collection.HR_COLLECTION).updateOne({_id : ObjectId(id)} , {
+                    $set : {
+                        password : hashedPassword ,
+                        status : "active"
+                    }
+                })
+
+            const hrDetails = await db.get().collection(collection.HR_COLLECTION).findOne({_id : ObjectId(hrid)})
+
+            res.status(200).json(hrDetails)
+            
+            } catch (error) {
+                console.log(error.message);
+                res.status(401).json(error.message)
+            }
+            
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({Err : error})
+        }
+    }
 }
