@@ -33,8 +33,6 @@ module.exports = {
 
             sendEmail(hr.email , "Create Your Hr Account with JobsWay" , {name : hr.name , link : signLink} ,"../Public/Mail/mailTemplate.handlebars")
 
-            console.log(signLink);
-
             res.status(200).json({hr , signLink})
 
         } catch (error) {
@@ -63,7 +61,7 @@ module.exports = {
                 await db.get().collection(collection.HR_COLLECTION).updateOne({_id : ObjectId(id)} , {
                     $set : {
                         password : hashedPassword ,
-                        status : "active"
+                        status : "active",
                     }
                 })
 
@@ -94,7 +92,7 @@ module.exports = {
             
         } catch (error) {
             console.log(error.message);
-            res.status(401).json(error.message)
+            res.status(500).json(error.message)
         }
     },
     deleteHrByComapny : async (req ,res) => {
@@ -108,6 +106,27 @@ module.exports = {
         } catch (error) {
             console.log(error.message);
             res.status(401).json(error.message)
+        }
+    },
+    loginHr : async (req , res) => {
+
+        const { email , password  } = req.body
+
+        try {
+            const hrDetails = await db.get().collection(collection.HR_COLLECTION).findOne({email})
+
+            if(!hrDetails) return res.status(400).json({error : 'Hr with this email not found'})
+
+            const isPasswordCorrect = await bcrypt.compare(password,hrDetails.password)
+
+            if(!isPasswordCorrect) return res.status(400).json({error : 'Incorrect Password'})
+
+            const token = jwt.sign({email:hrDetails.email,id:hrDetails._id.str},'secret',{expiresIn:"1h"})
+
+            res.status(200).json({hrDetails,token})
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).json(error.message)
         }
     }
 }

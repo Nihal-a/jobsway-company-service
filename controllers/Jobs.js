@@ -8,8 +8,10 @@ const { validationResult } = require('express-validator')
 
 module.exports = {
     addJob : async (req,res) => {
-        const id = req.query.id
-        const jobDetails = {...req.body , companyId : ObjectId(id)}
+        const { hrId } = req.params
+        const { cid } = req.query
+        const jobDetails = {...req.body , companyId : ObjectId(cid) , hrId : ObjectId(hrId)}
+
         var errors = validationResult(req)
         
         try {
@@ -61,8 +63,13 @@ module.exports = {
         }
     },
     deleteJob : async(req, res) => {
-        const id = req.params.id
+        const {id} = req.params
+        const {hrId} = req.query
         try {
+            var deleteJob =await db.get().collection(collection.JOBS_COLLECTION).findOne({_id : ObjectId(id)})
+
+            if(hrId !== deleteJob.hrId.toString()) return res.status(400).json({msg : "Invalid Access to Delete the Job"})
+
             var deleteJob =await db.get().collection(collection.JOBS_COLLECTION).deleteOne({_id : ObjectId(id)})
 
             res.status(200).json({msg : 'Job Deteleted Successfully'})
