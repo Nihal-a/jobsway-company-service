@@ -85,5 +85,19 @@ module.exports = {
     },
     editJob : async(req,res) => {
 
+    },
+    getAllJobsByHr : async (req ,res) => {
+        const {hrId} = req.params
+
+        try {
+
+            let AllJobsByHr = await db.get().collection(collection.JOBS_COLLECTION).find({hrId : ObjectId(hrId)}).toArray()
+
+            res.status(200).json(AllJobsByHr)
+            
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({Err : error})
+        }
     }
 }

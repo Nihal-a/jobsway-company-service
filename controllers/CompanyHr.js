@@ -33,6 +33,8 @@ module.exports = {
 
             sendEmail(hr.email , "Create Your Hr Account with JobsWay" , {name : hr.name , link : signLink} ,"../Public/Mail/mailTemplate.handlebars")
 
+            delete hr.password
+
             res.status(200).json({hr , signLink})
 
         } catch (error) {
