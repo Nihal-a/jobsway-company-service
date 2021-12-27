@@ -11,9 +11,16 @@ module.exports = {
         const { hrId } = req.params
 
         try {
-            // let allAppliedUsersByHr = await db.get().collection(collection.)
+            const allAppliedUsersByHr = await db.get().collection(collection.JOBS_COLLECTION).aggregate([
+                { $match : { hrId : ObjectId(hrId) } } ,
+                { $unwind : "$applications" },
+                { $project : { applications : 1 } }
+            ]).toArray()
+
+            res.status(200).json(allAppliedUsersByHr)
         } catch (error) {
-            
+            console.log(error);
+            res.status(500).json({Err : error})
         }
     }
 }
