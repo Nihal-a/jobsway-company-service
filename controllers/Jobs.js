@@ -89,11 +89,15 @@ module.exports = {
     },
     getAllJobsByHr : async (req ,res) => {
         const {hrId} = req.params
-        console.log(hrId);
-
+        
         try {
 
-            let AllJobsByHr = await db.get().collection(collection.JOBS_COLLECTION).find({hrId : ObjectId(hrId)}).toArray()
+            let AllJobsByHr = await db.get().collection(collection.JOBS_COLLECTION).find({
+                $and : [
+                    { hrId : ObjectId(hrId) },
+                    { status : true }
+                ]
+            }).toArray()
 
             res.status(200).json(AllJobsByHr)
 

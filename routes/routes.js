@@ -20,7 +20,7 @@ router.patch('/reregister', reregisterCompany)
 
 //Company
 router.get('/company/:id', getCompanyDetails)
-router.get('/jobs/:id' , getCompanyJobs)
+router.get('/company/jobs/:id' , getCompanyJobs)
 
 //Jobs
 router.post('/add-job/:hrId' ,valdiateJobDetails,addJob)

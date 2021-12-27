@@ -21,7 +21,7 @@ module.exports = {
         }
     },
     getCompanyJobs : async(req,res) => {
-        const id = req.params.id
+        const { id } = req.params
         try {
             const companyJobs = await db.get().collection(collection.JOBS_COLLECTION).find({
                 $and : [
