@@ -19,7 +19,7 @@ module.exports = {
 
             const password =await bcrypt.hash(process.env.HR_MODEL_PASSWORD , 10)
             
-            let {insertedId} = await db.get().collection(collection.HR_COLLECTION).insertOne({email , name , companyId : ObjectId(companyId) , password })
+            let {insertedId} = await db.get().collection(collection.HR_COLLECTION).insertOne({email , name , companyId : ObjectId(companyId) , password , status : 'pending'})
 
             const hr = await db.get().collection(collection.HR_COLLECTION).findOne({_id : insertedId})
 

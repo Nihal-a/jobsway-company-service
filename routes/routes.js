@@ -5,6 +5,7 @@ const { addCompanyHr, activateHrAccount , getAllHrByCompany , deleteHrByComapny,
 const { getJobById , addJob , addFreeJob , deleteJob , editJob ,getAllJobsByHr} = require('../controllers/Jobs');
 const {valdiateJobDetails , validateCompanyRegistration } = require('../middlewares/JobVerification')
 const { updateJobTransaction , addJobPayment , verifyPayment , stripePayment , payPalCreatePayment , payPalExecutePayment} = require('../controllers/Payments');
+const { getAppliedUsersByHr } = require('../controllers/UserController');
 
 const router  = express.Router();
 
@@ -25,7 +26,7 @@ router.get('/jobs/:id' , getCompanyJobs)
 router.post('/add-job/:hrId' ,valdiateJobDetails,addJob)
 router.get('/job/:id' , getJobById)
 router.delete('/delete-job/:id' , deleteJob)
-router.post('/add-free-plan/:hrid', addFreeJob)
+router.post('/add-free-plan/:hrId', addFreeJob)
 router.patch('/edit-job/:id&cid' , editJob)
 router.get('/jobs/:hrId' , getAllJobsByHr)
 
@@ -37,7 +38,8 @@ router.get('/get-all-hr/:cid' , getAllHrByCompany)
 router.delete('/delete-hr/:cid' , deleteHrByComapny)
 router.post('/login/hr' , loginHr)
 
-
+//Users
+router.get('/jobs/applied-users/:hrId' , getAppliedUsersByHr)
 
 // Payment
 
