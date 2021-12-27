@@ -5,7 +5,7 @@ const { addCompanyHr, activateHrAccount , getAllHrByCompany , deleteHrByComapny,
 const { getJobById , addJob , addFreeJob , deleteJob , editJob ,getAllJobsByHr} = require('../controllers/Jobs');
 const {valdiateJobDetails , validateCompanyRegistration } = require('../middlewares/JobVerification')
 const { updateJobTransaction , addJobPayment , verifyPayment , stripePayment , payPalCreatePayment , payPalExecutePayment} = require('../controllers/Payments');
-const { getAppliedUsersByHr } = require('../controllers/UserController');
+const { getAppliedUsersByHr, getShortListedApplicantsByHr } = require('../controllers/UserController');
 
 const router  = express.Router();
 
@@ -38,9 +38,11 @@ router.get('/get-all-hr/:cid' , getAllHrByCompany)
 router.delete('/delete-hr/:cid' , deleteHrByComapny)
 router.post('/login/hr' , loginHr)
 router.patch('/applicants/shortlist/:hrId' , shortListApplicant)
+router.get('/applicants/shortlisted/:hrId' , getShortListedApplicantsByHr)
 
 //Users
 router.get('/jobs/applied-users/:hrId' , getAppliedUsersByHr)
+
 
 // Payment
 
