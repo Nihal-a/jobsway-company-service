@@ -38,8 +38,6 @@ module.exports = {
 
         var accessCheck =await db.get().collection(collection.JOBS_COLLECTION).findOne({_id : ObjectId(jobId)})
 
-        console.log(accessCheck);
-
         if(hrId !== accessCheck.hrId.toString()) return res.status(400).json({msg : "Invalid Access to Delete the Job"})
 
         await db.get().collection(collection.JOBS_COLLECTION).updateOne({_id: ObjectId(jobId)}, {

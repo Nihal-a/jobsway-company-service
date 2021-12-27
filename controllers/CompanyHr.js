@@ -27,7 +27,7 @@ module.exports = {
 
             const payload = { email : hr.email, id : hr._id, }
 
-            const token = jwt.sign(payload , secret , { expiresIn : '2m' })
+            const token = jwt.sign(payload , secret , { expiresIn : '15m' })
 
             const signLink = `http://localhost:3002/hr-signup-page/${token}/${hr._id}`
 
@@ -126,6 +126,29 @@ module.exports = {
             const token = jwt.sign({email:hrDetails.email,id:hrDetails._id.str},'secret',{expiresIn:"1h"})
 
             res.status(200).json({hrDetails,token})
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).json(error.message)
+        }
+    },
+    shortListApplicant : async (req ,res) => {
+        const {hrId} = req.params
+        const { jobId , userId } = req.body
+
+        try {
+            var accessCheck =await db.get().collection(collection.JOBS_COLLECTION).findOne({_id : ObjectId(jobId)})
+
+            if(hrId !== accessCheck.hrId.toString()) return res.status(400).json({msg : "Invalid Access to Delete the Job"})
+
+            await db.get().collection(collection.JOBS_COLLECTION).updateOne(
+                {
+                    _id : ObjectId(jobId) ,
+                    applications : { $elemMatch : {userId : userId} }
+                },
+                { $set : { "applications.$.status" : "SHORTLISTED" }}
+            )
+
+            res.status(200).json({msg : 'Applicant Shortlisted Successfully'})
         } catch (error) {
             console.log(error.message);
             res.status(500).json(error.message)
