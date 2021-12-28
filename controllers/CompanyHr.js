@@ -200,5 +200,17 @@ module.exports = {
             console.log(error);
             res.status(500).json(error.message)
         }
+    },
+    getAllTaskByHr : async (req ,res) => {
+        const {hrId} = req.params
+
+        try {
+            const allTaskSet = await db.get().collection(collection.TASK_SET_COLLECTION).findOne({hrId : ObjectId(hrId)})
+
+            res.status(200).json(allTaskSet)
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(error.message)
+        }
     }
 }
