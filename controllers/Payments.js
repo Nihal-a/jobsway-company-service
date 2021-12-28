@@ -48,7 +48,7 @@ module.exports = {
         try {
             var hmac = createHmac('sha256',process.env.RZP_KEY_SECRET)
 
-            hmac.update(payDetails.order.data.id + '|' + payDetails.response.razorpay_payment_id)
+            hmac.update(payDetails.order.id + '|' + payDetails.response.razorpay_payment_id)
 
             var hmac = hmac.digest('hex')
 

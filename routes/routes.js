@@ -38,7 +38,10 @@ router.delete('/delete-hr/:cid' , deleteHrByComapny)
 router.post('/login/hr' , loginHr)
 router.patch('/applicants/shortlist/:hrId' , shortListApplicant)
 router.get('/applicants/shortlisted/:hrId' , getShortListedApplicantsByHr)
+
+//Hr Tasks
 router.post('/task-sets/:hrId' , setTaskSetsByHr)
+router.get('/task/all/:hrId',  getAllTaskByHr)
 
 //Users
 router.get('/jobs/applied-users/:hrId' , getAppliedUsersByHr)
