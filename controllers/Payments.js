@@ -44,6 +44,7 @@ module.exports = {
     },
     verifyPayment : async (req,res) => {
         const payDetails = req.body
+        console.log("Details" ,payDetails);
         try {
             var hmac = createHmac('sha256',process.env.RZP_KEY_SECRET)
 
