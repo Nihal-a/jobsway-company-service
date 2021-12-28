@@ -41,7 +41,7 @@ router.get('/applicants/shortlisted/:hrId' , getShortListedApplicantsByHr)
 
 //Hr Tasks
 router.post('/task-sets/:hrId' , setTaskSetsByHr)
-router.get('/task/all/:hrId',  getAllTaskByHr)
+// router.get('/task/all/:hrId',  getAllTaskByHr)
 
 //Users
 router.get('/jobs/applied-users/:hrId' , getAppliedUsersByHr)
