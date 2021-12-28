@@ -212,5 +212,41 @@ module.exports = {
             console.log(error);
             res.status(500).json(error.message)
         }
+    },
+    assignTaskToUser : async (req ,res) => {
+        const { hrId } = req.params
+        const { time , taskQuestions  , userId , companyId , jobId , submitType } = req.body //companyName,id,Location //URL or File
+
+        try {
+            var accessCheck =await db.get().collection(collection.JOBS_COLLECTION).findOne({_id : ObjectId(jobId)})
+
+            if(hrId !== accessCheck.hrId.toString()) return res.status(400).json({msg : "Invalid Access to Delete the Job"})
+
+
+            await db.get().collection(collection.USER_TASK_COLLECTION).insertOne(
+               {
+                   userId : ObjectId(userId),
+                   jobId : ObjectId(jobId),
+                   companyId ,
+                   taskQuestions ,
+                   time ,
+                   submitType
+               }
+            )
+
+            await db.get().collection(collection.JOBS_COLLECTION).updateOne(
+                {
+                    _id : ObjectId(jobId) ,
+                    applications : { $elemMatch : {userId : userId} }
+                },
+                { $set : { "applications.$.status" : "TASK ASSIGNED" }}
+            )
+
+            res.status(200).json({msg : "Success"})
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(error.message)
+        }
     }
 }

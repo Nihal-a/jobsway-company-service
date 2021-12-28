@@ -1,7 +1,7 @@
 var express = require('express');
 const {registerCompany , reregisterCompany , loginCompany} = require('../controllers/Auth');
 const {getCompanyDetails , getCompanyJobs , showWelcome} = require('../controllers/Company');
-const { addCompanyHr, activateHrAccount , getAllHrByCompany , deleteHrByComapny, loginHr , shortListApplicant ,setTaskSetsByHr, getAllTaskByHr} = require('../controllers/CompanyHr');
+const { addCompanyHr, activateHrAccount , getAllHrByCompany , deleteHrByComapny, loginHr , shortListApplicant ,setTaskSetsByHr, getAllTaskByHr ,assignTaskToUser} = require('../controllers/CompanyHr');
 const { getJobById , addJob , addFreeJob , deleteJob , editJob ,getAllJobsByHr} = require('../controllers/Jobs');
 const {valdiateJobDetails , validateCompanyRegistration } = require('../middlewares/JobVerification')
 const { updateJobTransaction , addJobPayment , verifyPayment , stripePayment , payPalCreatePayment , payPalExecutePayment} = require('../controllers/Payments');
@@ -9,7 +9,7 @@ const { getAppliedUsersByHr, getShortListedApplicantsByHr } = require('../contro
 
 const router  = express.Router();
 
-//Default
+//Welcome
 router.get('/', showWelcome)
 
 //Auth
@@ -39,9 +39,11 @@ router.post('/login/hr' , loginHr)
 router.patch('/applicants/shortlist/:hrId' , shortListApplicant)
 router.get('/applicants/shortlisted/:hrId' , getShortListedApplicantsByHr)
 
-//Hr Tasks
-router.post('/task-sets/:hrId' , setTaskSetsByHr)
-router.get('/task/all/:hrId',  getAllTaskByHr)
+        //Hr Tasks
+        router.post('/task-sets/:hrId' , setTaskSetsByHr)
+        router.get('/task/all/:hrId',  getAllTaskByHr)
+        router.post('/task/assign/:hrId' , assignTaskToUser)
+
 
 //Users
 router.get('/jobs/applied-users/:hrId' , getAppliedUsersByHr)
