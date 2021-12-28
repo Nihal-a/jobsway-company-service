@@ -1,7 +1,7 @@
 var express = require('express');
 const {registerCompany , reregisterCompany , loginCompany} = require('../controllers/Auth');
 const {getCompanyDetails , getCompanyJobs , showWelcome} = require('../controllers/Company');
-const { addCompanyHr, activateHrAccount , getAllHrByCompany , deleteHrByComapny, loginHr , shortListApplicant} = require('../controllers/CompanyHr');
+const { addCompanyHr, activateHrAccount , getAllHrByCompany , deleteHrByComapny, loginHr , shortListApplicant ,setTaskSetsByHr} = require('../controllers/CompanyHr');
 const { getJobById , addJob , addFreeJob , deleteJob , editJob ,getAllJobsByHr} = require('../controllers/Jobs');
 const {valdiateJobDetails , validateCompanyRegistration } = require('../middlewares/JobVerification')
 const { updateJobTransaction , addJobPayment , verifyPayment , stripePayment , payPalCreatePayment , payPalExecutePayment} = require('../controllers/Payments');
@@ -26,7 +26,6 @@ router.get('/company/jobs/:id' , getCompanyJobs)
 router.post('/add-job/:hrId' ,valdiateJobDetails,addJob)
 router.get('/job/:id' , getJobById)
 router.delete('/delete-job/:id' , deleteJob)
-router.post('/add-free-plan/:hrId', addFreeJob)
 router.patch('/edit-job/:id&cid' , editJob)
 router.get('/jobs/:hrId' , getAllJobsByHr)
 
@@ -39,12 +38,16 @@ router.delete('/delete-hr/:cid' , deleteHrByComapny)
 router.post('/login/hr' , loginHr)
 router.patch('/applicants/shortlist/:hrId' , shortListApplicant)
 router.get('/applicants/shortlisted/:hrId' , getShortListedApplicantsByHr)
+router.post('/task-sets/:hrId' , setTaskSetsByHr)
 
 //Users
 router.get('/jobs/applied-users/:hrId' , getAppliedUsersByHr)
 
 
 // Payment
+
+        //Free Plan
+        router.post('/add-free-plan/:hrId', addFreeJob) 
 
         // Razorpay
         router.post('/update-job-transaction/:hrId',updateJobTransaction)

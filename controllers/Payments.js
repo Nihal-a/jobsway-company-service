@@ -62,7 +62,7 @@ module.exports = {
 
             await db.get().collection(collection.TRANSACTIONS_COLLECTION).insertOne(payDetails.transactionDetails)
             
-            res.status(200)
+            res.status(200).json({msg : 'Success'})
 
         } catch (error) {
             console.log(error);

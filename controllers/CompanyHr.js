@@ -5,7 +5,7 @@ const { ObjectId } = require('mongodb')
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 const sendEmail = require('../utils/nodeMailer')
-
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
     addCompanyHr : async (req , res) => {
@@ -151,6 +151,53 @@ module.exports = {
             res.status(200).json({msg : 'Applicant Shortlisted Successfully'})
         } catch (error) {
             console.log(error.message);
+            res.status(500).json(error.message)
+        }
+    },
+    setTaskSetsByHr : async (req , res) => {
+
+        const {hrId} = req.params
+        const { set1 , set2 , set3 } = req.body
+
+        try {
+            const TaskSetExists = await db.get().collection(collection.TASK_SET_COLLECTION).findOne({hrId : ObjectId(hrId)})
+
+            if(!TaskSetExists){
+                await db.get().collection(collection.TASK_SET_COLLECTION).insertOne({
+                    hrId : ObjectId(hrId) ,
+                })
+            }  
+                if(set1){
+                    const Qset1 = {...set1 , uuid : uuidv4()}
+                    await db.get().collection(collection.TASK_SET_COLLECTION).updateOne({ hrId : ObjectId(hrId) } , {
+                        $set : {
+                            Qset1 : Qset1
+                        } 
+                    })
+                } 
+
+                if(set2) {
+                    const Qset2 = {...set2 , uuid : uuidv4()}
+                    await db.get().collection(collection.TASK_SET_COLLECTION).updateOne({ hrId : ObjectId(hrId) } , {
+                        $set : {
+                            Qset2 : Qset2
+                        }
+                    })
+                }
+
+                if(set3) {
+                    const Qset3 = {...set3 , uuid : uuidv4()}
+                    await db.get().collection(collection.TASK_SET_COLLECTION).updateOne({ hrId : ObjectId(hrId) } , {
+                        $set : {
+                            Qset3 : Qset3
+                        }
+                    })
+                }
+
+            res.status(200).json({msg : 'Task Set Added'})
+
+        } catch (error) {
+            console.log(error);
             res.status(500).json(error.message)
         }
     }
