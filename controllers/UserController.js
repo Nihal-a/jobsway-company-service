@@ -41,5 +41,16 @@ module.exports = {
             console.log(error);
             res.status(500).json({Err : error})
         }
+    },
+    getUserTaskCompleted : async (req ,res) => {
+        const { hrId }  = req.params
+        try {
+            let hrTasksCompletedUsers = await db.get().collection(collection.USER_TASK_COLLECTION).find( { $and : [ {hrId : ObjectId(hrId) } , {status : "COMPLETED"}] } )
+
+            res.status(200).json(hrTasksCompletedUsers)
+        } catch (error) {
+            console.log(error);
+            res.status(500).json({Err : error})
+        }
     }
 }
