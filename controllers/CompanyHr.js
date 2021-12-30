@@ -154,6 +154,29 @@ module.exports = {
             res.status(500).json(error.message)
         }
     },
+    rejectApplicant : async (req ,res) => {
+            const {hrId} = req.params
+            const { jobId , userId } = req.body
+        try {
+            var accessCheck =await db.get().collection(collection.JOBS_COLLECTION).findOne({_id : ObjectId(jobId)})
+
+            if(hrId !== accessCheck.hrId.toString()) return res.status(400).json({msg : "Invalid Access to Delete the Job"})
+            
+            await db.get().collection(collection.JOBS_COLLECTION).updateOne(
+                {
+                    _id : ObjectId(jobId) ,
+                    applications : { $elemMatch : {userId : userId} }
+                },
+                { $set : { "applications.$.status" : "REJECTED" }}
+            )
+
+            res.status(200).json({msg : 'Applicant Rejected Successfully'})
+
+        } catch (error) {
+            console.log(error.message);
+            res.status(500).json(error.message)
+        }
+    },
     setTaskSetsByHr : async (req , res) => {
 
         const {hrId} = req.params
