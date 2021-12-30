@@ -15,7 +15,7 @@ module.exports = {
                 { $match : { hrId : ObjectId(hrId) } } ,
                 { $project : { jobTitle : 1 ,  applications : 1 } },
                 { $unwind : "$applications" },
-
+                { $match : { "applications.status" :  "PENDING"}}
             ]).toArray()
 
             res.status(200).json(allAppliedUsersByHr)
