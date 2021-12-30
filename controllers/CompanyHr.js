@@ -238,7 +238,7 @@ module.exports = {
     },
     assignTaskToUser : async (req ,res) => {
         const { hrId } = req.params
-        const { time , taskQuestions  , userId , companyId , jobId , submitType } = req.body //companyName,id,Location //URL or File
+        const { time , taskQuestions  , userId , companyDetails , jobId , submitType } = req.body //companyName,id,Location //URL or File
 
         try {
             var accessCheck =await db.get().collection(collection.JOBS_COLLECTION).findOne({_id : ObjectId(jobId)})
@@ -251,7 +251,7 @@ module.exports = {
                    userId : ObjectId(userId),
                    jobId : ObjectId(jobId),
                    status : "PENDING" ,
-                   companyId ,
+                   companyDetails ,
                    taskQuestions ,
                    time ,
                    submitType
