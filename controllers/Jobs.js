@@ -10,7 +10,7 @@ module.exports = {
     addJob : async (req,res) => {
         const { hrId } = req.params
         const { cid } = req.query
-        const jobDetails = {...req.body , companyId : ObjectId(cid) , hrId : ObjectId(hrId)}
+        const jobDetails = {...req.body , companyId : ObjectId(cid) , hrId : ObjectId(hrId) , status : false}
 
         var errors = validationResult(req)
         
