@@ -13,8 +13,9 @@ module.exports = {
         try {
             const allAppliedUsersByHr = await db.get().collection(collection.JOBS_COLLECTION).aggregate([
                 { $match : { hrId : ObjectId(hrId) } } ,
+                { $project : { jobTitle : 1 ,  applications : 1 } },
                 { $unwind : "$applications" },
-                { $project : { applications : 1 } }
+
             ]).toArray()
 
             res.status(200).json(allAppliedUsersByHr)
