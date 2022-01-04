@@ -251,7 +251,7 @@ module.exports = {
                    userId : ObjectId(userId),
                    jobId : ObjectId(jobId),
                    status : "PENDING" ,
-                   companyId ,
+                   companyId : ObjectId(companyId) ,
                    taskQuestions ,
                    time ,
                    submitType
