@@ -30,7 +30,7 @@ module.exports = {
 
             const token = jwt.sign(payload , secret , { expiresIn : '15m' })
 
-            const signLink = `http://localhost:3002/hr-signup-page/${token}/${hr._id}`
+            const signLink = `${process.env.HOSTURL}/hr-signup-page/${token}/${hr._id}`
 
             sendEmail(hr.email , "Create Your Hr Account with JobsWay" , {name : hr.name , link : signLink} ,"../Public/Mail/mailTemplate.handlebars")
 
