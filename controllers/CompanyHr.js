@@ -13,6 +13,7 @@ module.exports = {
         const companyId = req.params.cid
 
         try {
+
             const hrExist = await db.get().collection(collection.HR_COLLECTION).findOne({email})
 
             if(hrExist) return res.status(401).json({msg : 'HR with this Email already exists'})
