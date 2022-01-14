@@ -100,7 +100,7 @@ module.exports = {
     },
     deleteHrByComapny : async (req ,res) => {
 
-        const {hrId} = req.body
+        const {hrId} = req.params
 
         try {
             await db.get().collection(collection.HR_COLLECTION).deleteOne({_id : ObjectId(hrId)})

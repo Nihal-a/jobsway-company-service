@@ -34,7 +34,7 @@ router.get('/jobs/:hrId' , getAllJobsByHr)
 router.post('/add-company-hr/:cid' , addCompanyHr)
 router.patch('/activate-hr-account/:token/:hrid' , activateHrAccount)
 router.get('/get-all-hr/:cid' , getAllHrByCompany)
-router.delete('/delete-hr/:cid' , deleteHrByComapny)
+router.delete('/delete-hr/:cid/:hrId' , deleteHrByComapny)
 router.post('/login/hr' , loginHr)
 router.patch('/applicants/shortlist/:hrId' , shortListApplicant)
 router.patch('/applicants/reject/:hrId' , rejectApplicant)
@@ -56,7 +56,7 @@ router.get('/search/:keyword' , doSearch)
 // Payment
 
         //Free Plan
-        router.post('/add-free-plan/:hrId', addFreeJob) 
+        router.post('/add-free-plan/:hrId' ,addFreeJob) 
 
         // Razorpay
         router.post('/update-job-transaction/:hrId',updateJobTransaction)
