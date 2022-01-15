@@ -92,12 +92,24 @@ module.exports = {
         
         try {
 
-            let AllJobsByHr = await db.get().collection(collection.JOBS_COLLECTION).find({
-                $and : [
-                    { hrId : ObjectId(hrId) },
-                    { status : true }
-                ]
-            }).toArray()
+            let AllJobsByHr = await db.get().collection(collection.JOBS_COLLECTION).aggregate([
+                {
+                    $match : {
+                        $and : [
+                            { hrId : ObjectId(hrId) },
+                            { status : true }
+                        ]
+                    }
+                },
+                {
+                    $lookup : {
+                     from : collection.COMPANY_COLLECTION,
+                     localField : "companyId" ,
+                     foreignField : "_id",
+                     as : 'companyDetails'
+                    }
+                }
+            ]).toArray()
 
             res.status(200).json(AllJobsByHr)
 
