@@ -3,14 +3,14 @@ const db = require('../config/connection')
 const collection = require('../config/collection')
 const { ObjectId } = require('mongodb')
 const { validationResult } = require('express-validator')
-
+const moment = require('moment')
 
 
 module.exports = {
     addJob : async (req,res) => {
         const { hrId } = req.params
         const { cid } = req.query
-        const jobDetails = {...req.body , companyId : ObjectId(cid) , hrId : ObjectId(hrId) , status : false}
+        const jobDetails = {...req.body , companyId : ObjectId(cid) , hrId : ObjectId(hrId) , status : false , createdDate : new Date()}
 
         var errors = validationResult(req)
         
@@ -39,6 +39,10 @@ module.exports = {
         var accessCheck =await db.get().collection(collection.JOBS_COLLECTION).findOne({_id : ObjectId(jobId)})
 
         if(hrId !== accessCheck.hrId.toString()) return res.status(400).json({msg : "Invalid Access to Delete the Job"})
+
+        let unix = new moment().valueOf();
+
+        await db.get().collection(collection.JOBS_COLLECTION).createIndex({createdDate : unix } , { expireAfterSeconds : 86400 *  3 })
 
         await db.get().collection(collection.JOBS_COLLECTION).updateOne({_id: ObjectId(jobId)}, {
             $set : {
@@ -83,9 +87,6 @@ module.exports = {
             console.log(error);
             res.status(500).json({Err : error})
         }
-    },
-    editJob : async(req,res) => {
-
     },
     getAllJobsByHr : async (req ,res) => {
         const {hrId} = req.params
