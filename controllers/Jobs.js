@@ -40,9 +40,9 @@ module.exports = {
 
         if(hrId !== accessCheck.hrId.toString()) return res.status(400).json({msg : "Invalid Access to Delete the Job"})
 
-        let unix = new moment().valueOf();
+        // let unix = new moment().valueOf();
 
-        await db.get().collection(collection.JOBS_COLLECTION).createIndex({createdDate : unix } , { expireAfterSeconds : 86400 *  3 })
+        // await db.get().collection(collection.JOBS_COLLECTION).createIndex({createdDate : unix } , { expireAfterSeconds : 86400 *  3 })
 
         await db.get().collection(collection.JOBS_COLLECTION).updateOne({_id: ObjectId(jobId)}, {
             $set : {

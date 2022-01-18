@@ -89,7 +89,7 @@ module.exports = {
                     twitter : companyDetails.twitter,
                     instagram : companyDetails.instagram,
                     status : false,
-                    imgUrl : companyDetails.imgUrl,
+                    logoUrl : companyDetails.logoUrl,
                     ban : false
                 },
                 $unset : {

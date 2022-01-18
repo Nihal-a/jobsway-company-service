@@ -48,7 +48,7 @@ module.exports = {
         try {
             var hmac = createHmac('sha256',process.env.RZP_KEY_SECRET)
 
-            hmac.update(payDetails.order.id + '|' + payDetails.response.razorpay_payment_id)
+            hmac.update(payDetails.order.data.id + '|' + payDetails.response.razorpay_payment_id)
 
             var hmac = hmac.digest('hex')
 
@@ -66,7 +66,7 @@ module.exports = {
             res.status(200).json({msg : 'Success'})
 
         } catch (error) {
-            console.log(error);
+            console.log("error" , error);
             res.status(500).json({Err : error})
         }
     },
