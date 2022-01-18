@@ -144,7 +144,7 @@ module.exports = {
             await db.get().collection(collection.JOBS_COLLECTION).updateOne(
                 {
                     _id : ObjectId(jobId) ,
-                    applications : { $elemMatch : {userId : userId} }
+                    "applications.userId" : userId
                 },
                 { $set : { "applications.$.status" : "SHORTLISTED" }}
             )
