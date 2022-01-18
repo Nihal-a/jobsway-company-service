@@ -30,9 +30,9 @@ module.exports = {
         try {
             const allShortListedApplicants = await db.get().collection(collection.JOBS_COLLECTION).aggregate([
                 { $match : { hrId : ObjectId(hrId) } } ,
+                { $project : { jobTitle : 1 ,  applications : 1 } },
                 { $unwind : "$applications" },
-                { $match : { "applications.status" : "SHORTLISTED" } } ,
-                { $project : { applications : 1} },
+                { $match : { "applications.status" :  "SHORTLISTED"}}
 
             ]).toArray()
 
