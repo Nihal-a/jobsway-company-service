@@ -30,7 +30,7 @@ module.exports = {
 
             const token = jwt.sign(payload , secret , { expiresIn : '15m' })
 
-            const signLink = `${process.env.HOSTURL}/hr-signup-page/${token}/${hr._id}`
+            const signLink = `http://${process.env.HOSTURL}/hr-signup-page/${token}/${hr._id}`
 
             sendEmail(hr.email , "Create Your Hr Account with JobsWay" , {name : hr.name , link : signLink} ,"../Public/Mail/mailTemplate.handlebars")
 
@@ -238,6 +238,7 @@ module.exports = {
         }
     },
     assignTaskToUser : async (req ,res) => {
+        console.log(req.url);
         const { hrId } = req.params
         const { time , taskQuestions  , userId , companyId , jobId , submitType } = req.body //companyName,id,Location //URL or File
 
@@ -267,7 +268,7 @@ module.exports = {
                 { $set : { "applications.$.status" : "TASK ASSIGNED" }}
             )
 
-            res.status(200).json({msg : "Success"})
+            res.status(200).json({msg : "Task Assigned"})
 
         } catch (error) {
             console.log(error);

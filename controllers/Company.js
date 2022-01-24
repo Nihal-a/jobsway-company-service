@@ -23,13 +23,31 @@ module.exports = {
     getCompanyJobs : async(req,res) => {
         const { id } = req.params
         try {
-            const companyJobs = await db.get().collection(collection.JOBS_COLLECTION).find({
-                $and : [
-                    { companyId : ObjectId(id) },
-                    { status : true }
-                ]
-            }).toArray()
-
+            // const companyJobs = await db.get().collection(collection.JOBS_COLLECTION).find({
+            //     $and : [
+            //         { companyId : ObjectId(id) },
+            //         { status : true }
+            //     ],}).toArray()
+            
+            const companyJobs = await db.get().collection(collection.JOBS_COLLECTION).aggregate([
+                {
+                    $match : { 
+                        $and : [
+                            { companyId : ObjectId(id) },
+                               { status : true }
+                        ]
+                    },
+                },
+                {
+                    $lookup : {
+                     from : collection.COMPANY_COLLECTION,
+                     localField : "companyId" ,
+                     foreignField : "_id",
+                     as : 'companyDetails'
+                    }
+                }
+            ]).toArray()
+            
             res.status(200).json(companyJobs)
 
         } catch (error) {
