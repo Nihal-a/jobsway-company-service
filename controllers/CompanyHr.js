@@ -149,6 +149,14 @@ module.exports = {
                 { $set : { "applications.$.status" : "SHORTLISTED" }}
             )
 
+            await db.get().collection(collection.USER_COLLECTION).updateOne(
+                {
+                    _id : ObjectId(userId) ,
+                    "appliedJobs.id" : ObjectId(jobId)
+                },
+                { $set : { "appliedJobs.$.status" : "SHORTLISTED" }}
+            )
+
             res.status(200).json({msg : 'Applicant Shortlisted Successfully'})
         } catch (error) {
             console.log(error.message);
@@ -169,6 +177,14 @@ module.exports = {
                     "applications.userId" : userId
                 },
                 { $set : { "applications.$.status" : "REJECTED" }}
+            )
+
+            await db.get().collection(collection.USER_COLLECTION).updateOne(
+                {
+                    _id : ObjectId(userId) ,
+                    "appliedJobs.id" : ObjectId(jobId)
+                },
+                { $set : { "appliedJobs.$.status" : "REJECTED" }}
             )
 
             res.status(200).json({msg : 'Applicant Rejected Successfully'})
