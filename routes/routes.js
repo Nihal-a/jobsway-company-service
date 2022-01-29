@@ -1,7 +1,7 @@
 var express = require('express');
 const {registerCompany , reregisterCompany , loginCompany} = require('../controllers/Auth');
 const {getCompanyDetails , getCompanyJobs , showWelcome} = require('../controllers/Company');
-const { addCompanyHr, activateHrAccount , getAllHrByCompany , deleteHrByComapny, loginHr , shortListApplicant ,setTaskSetsByHr, getAllTaskByHr ,assignTaskToUser ,rejectApplicant , rejectCompletedTask} = require('../controllers/CompanyHr');
+const { addCompanyHr, activateHrAccount , getAllHrByCompany , deleteHrByComapny, loginHr , shortListApplicant ,setTaskSetsByHr, getAllTaskByHr ,assignTaskToUser ,rejectApplicant , rejectCompletedTask, approveTaskCompleted} = require('../controllers/CompanyHr');
 const { getJobById , addJob , addFreeJob , deleteJob ,getAllJobsByHr} = require('../controllers/Jobs');
 const {valdiateJobDetails , validateCompanyRegistration } = require('../middlewares/JobVerification')
 const { updateJobTransaction , addJobPayment , verifyPayment , stripePayment , payPalCreatePayment , payPalExecutePayment} = require('../controllers/Payments');
@@ -44,6 +44,7 @@ router.get('/applicants/shortlisted/:hrId' , getShortListedApplicantsByHr)
         router.get('/task/all/:hrId',  getAllTaskByHr)
         router.post('/task/assign/:hrId' , assignTaskToUser)
         router.delete('/task/completed/reject/:taskId' , rejectCompletedTask)
+        router.patch('/task/completed/approve/:taskId' , approveTaskCompleted)
 
 
 //Users

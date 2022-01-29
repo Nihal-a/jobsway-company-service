@@ -312,5 +312,44 @@ module.exports = {
             console.log(error);
             res.status(500).json(error.message)
         }
+    },
+    approveTaskCompleted : async(req,res) => {
+
+        const { taskId } = req.params
+
+        const { userId , jobId} = req.body
+
+        try {
+
+            await db.get().collection(collection.USER_TASK_COLLECTION).updateOne({_id : ObjectId(taskId) } ,
+                {
+                    $set : {
+                        status : "APPROVED",
+                    }
+                }
+            )
+
+            await db.get().collection(collection.JOBS_COLLECTION).updateOne(
+                {
+                    _id : ObjectId(jobId) ,
+                    applications : { $elemMatch : {userId : userId} }
+                },
+                { $set : { "applications.$.status" : "APPROVED" }}
+            )
+
+            await db.get().collection(collection.USER_COLLECTION).updateOne(
+                {
+                    _id : ObjectId(userId) ,
+                    "appliedJobs.id" : ObjectId(jobId)
+                },
+                { $set : { "appliedJobs.$.status" : "APPROVED" }}
+            )
+
+            res.status(200).json({ msg : "Approved Successfully."})
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(error.message)
+        }
     }
 }
