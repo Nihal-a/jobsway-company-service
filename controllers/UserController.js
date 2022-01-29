@@ -43,9 +43,25 @@ module.exports = {
         }
     },
     getUserTaskCompleted : async (req ,res) => {
+
         const { hrId }  = req.params
+        
         try {
-            let hrTasksCompletedUsers = await db.get().collection(collection.USER_TASK_COLLECTION).find( { $and : [ {hrId : ObjectId(hrId) } , {status : "COMPLETED"}] } )
+            let hrTasksCompletedUsers = await db.get().collection(collection.USER_TASK_COLLECTION).aggregate([
+                {
+                    $match : { $and : [ {hrId : ObjectId(hrId) } , {status : "COMPLETED"}] }
+                },
+                {
+                    $lookup : {
+                     from : collection.USER_COLLECTION,
+                     localField : "userId" ,
+                     foreignField : "_id",
+                     as : 'userDetails'
+                    }
+                }
+            ]).toArray()
+
+            // console.log(hrTasksCompletedUsers[0].userDetails);
 
             res.status(200).json(hrTasksCompletedUsers)
         } catch (error) {

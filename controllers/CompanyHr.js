@@ -268,6 +268,7 @@ module.exports = {
                {
                    userId : ObjectId(userId),
                    jobId : ObjectId(jobId),
+                   hrId : ObjectId(hrId),
                    status : "PENDING" ,
                    companyId : ObjectId(companyId) ,
                    taskQuestions ,
@@ -285,6 +286,27 @@ module.exports = {
             )
 
             res.status(200).json({msg : "Task Assigned"})
+
+        } catch (error) {
+            console.log(error);
+            res.status(500).json(error.message)
+        }
+    },
+    rejectCompletedTask : async(req,res) => {
+        
+        const { taskId } = req.params
+
+        try {
+
+            await db.get().collection(collection.USER_TASK_COLLECTION).updateOne({_id : ObjectId(taskId) } ,
+                {
+                    $set : {
+                        status : "REJECTED",
+                    }
+                }
+            )
+
+            res.status(200).json({ msg : "Rejected Successfully."})
 
         } catch (error) {
             console.log(error);
