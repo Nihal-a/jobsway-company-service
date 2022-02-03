@@ -45,6 +45,8 @@ module.exports = {
     getUserTaskCompleted : async (req ,res) => {
 
         const { hrId }  = req.params
+
+        console.log(hrId);
         
         try {
             let hrTasksCompletedUsers = await db.get().collection(collection.USER_TASK_COLLECTION).aggregate([
@@ -61,7 +63,7 @@ module.exports = {
                 }
             ]).toArray()
 
-            // console.log(hrTasksCompletedUsers[0].userDetails);
+            console.log(hrTasksCompletedUsers);
 
             res.status(200).json(hrTasksCompletedUsers)
         } catch (error) {

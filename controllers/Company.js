@@ -36,7 +36,7 @@ module.exports = {
                             { companyId : ObjectId(id) },
                                { status : true }
                         ]
-                    },
+                    }
                 },
                 {
                     $lookup : {
